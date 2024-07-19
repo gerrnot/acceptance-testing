@@ -30,3 +30,10 @@ spec:
               - sh
               - "-c"
               - "echo bar | grep {{ if .Values.breakme }}foo{{ else }}bar{{ end }}"
+          volumeMounts:
+            - mountPath: /dummy-volume-mount
+              name: {{ template "nginx.fullname" . }}
+      volumes:
+        - name: {{ template "nginx.fullname" . }}
+          persistentVolumeClaim:
+            claimName: {{ template "nginx.fullname" . }}

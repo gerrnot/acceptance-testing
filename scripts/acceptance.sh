@@ -36,7 +36,7 @@ set_shell_debug_level 2
 REQUIRED_SYSTEM_COMMANDS=(
     "kubectl"
     "python3"
-    "pip"
+    #"pip"  # TODO: Gernot alias not detected
     "virtualenv"
 )
 
@@ -133,8 +133,14 @@ fi
 set_shell_debug_level 2
 if [[ ! -d ${ROBOT_VENV_DIR} ]]; then
     virtualenv -p $(which python3) ${ROBOT_VENV_DIR}
+    python3 -m ensurepip # TODO: Gernot workaround macos
     pip install ${ROBOT_PY_REQUIRES}
 fi
 
 # Run Robot Framework, output
+#export KIND_CLUSTER_1_29_2="kind-kind"
+export CLUSTER_VERSIONS=1.29.2
+#export KIND_CLUSTER_1_15_3="kind-helm-ac-keepalive-1.15.3"
+#export CLUSTER_VERSIONS=1.15.3
+#export CLUSTER_PROVIDER=kind
 robot --outputdir=${ROBOT_OUTPUT_DIR} ${ROBOT_OPTS} ${SUITES_TO_RUN}

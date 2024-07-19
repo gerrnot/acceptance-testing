@@ -85,14 +85,14 @@ By default `make acceptance` will run every test suite (`*.robot` file) present 
 For example, to only run the `shells.robot` suite:
 
 ```
-ROBOT_RUN_TESTS=shells.robot
+export ROBOT_RUN_TESTS=shells.robot
 make acceptance
 ```
 
 To specify multiple test suites you can set `ROBOT_RUN_TESTS` to a comma-separated, or space-separated list.  For example:
 
 ```
-ROBOT_RUN_TESTS=shells.robot,kubernetes_versions.robot
+export ROBOT_RUN_TESTS=shells.robot,kubernetes_versions.robot
 make acceptance
 ```
 

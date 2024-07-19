@@ -205,7 +205,7 @@ EOF
 
 allHelmCommands="completion create dependency env 2to3 help get history install lint list package plugin pull push push-artifactory push-plugin registry repo rollback search show status template test uninstall upgrade verify version"
 if [ "$SHELL_TYPE" = bash ]; then
-    allHelmLongFlags="--burst-limit --debug --help --kube-apiserver --kube-as-group --kube-as-user --kube-ca-file --kube-context --kube-insecure-skip-tls-verify --kube-tls-server-name --kube-token --kubeconfig --namespace --registry-config --repository-cache --repository-config"
+    allHelmLongFlags="--burst-limit --debug --help --kube-apiserver --kube-as-group --kube-as-user --kube-ca-file --kube-context --kube-insecure-skip-tls-verify --kube-tls-server-name --kube-token --kubeconfig --namespace --qps --registry-config --repository-cache --repository-config"
     allHelmGlobalFlags="${allHelmLongFlags} -h -n"
 else
     allHelmGlobalFlags="--debug --kube-apiserver --kube-apiserver --kube-apiserver --kube-context --kube-context --kube-context --kube-token --kube-token --kube-token --kubeconfig --kubeconfig --kubeconfig --namespace --namespace --namespace --registry-config --registry-config --registry-config --repository-cache --repository-cache --repository-cache --repository-config --repository-config --repository-config -n"
@@ -240,7 +240,7 @@ fi
 
 # Basic second level commands (static completion)
 if [ ! -z ${ROBOT_HELM_V3} ]; then
-    _completionTests_verifyCompletion "helm get " "all hooks manifest notes values"
+    _completionTests_verifyCompletion "helm get " "all hooks manifest metadata notes values"
 else
     _completionTests_verifyCompletion "helm get " "all hooks manifest notes values"
 fi
@@ -307,7 +307,7 @@ else
 fi
 if [ ! -z ${ROBOT_HELM_V3} ]; then
     _completionTests_verifyCompletion "helm --namespace mynamespace get h" "hooks"
-    _completionTests_verifyCompletion "helm -n mynamespace get " "all hooks manifest notes values"
+    _completionTests_verifyCompletion "helm -n mynamespace get " "all hooks manifest metadata notes values"
     if [ "$SHELL_TYPE" = bash ]; then
         _completionTests_verifyCompletion "helm get --name" "--namespace"
     else
@@ -321,15 +321,6 @@ _completionTests_verifyCompletion "helm dependenci" ""
 
 # Static completion for plugins
 _completionTests_verifyCompletion "helm push-plugin " ""
-_completionTests_verifyCompletion "helm 2to3 " "cleanup convert move"
-_completionTests_verifyCompletion "helm 2to3 c" "cleanup convert"
-_completionTests_verifyCompletion "helm 2to3 move " "config"
-
-_completionTests_verifyCompletion "helm 2to3 cleanup -" "$allHelmGlobalFlags -r -s --label --cleanup --storage"
-# For plugin completion, when there are more short flags than long flags, a long flag is created for the extra short flags
-# So here we expect the extra --t
-_completionTests_verifyCompletion "helm 2to3 convert -" "$allHelmGlobalFlags -l -s -t --t --label --storage"
-_completionTests_verifyCompletion "helm 2to3 move config --" "$allHelmLongFlags --dry-run"
 
 #####################
 # Dynamic completions
@@ -356,9 +347,7 @@ if [ ! -z ${ROBOT_HELM_V3} ]; then
 fi
 
 # For the plugin command
-_completionTests_verifyCompletion "helm plugin uninstall " "2to3 push-artifactory push-plugin"
 _completionTests_verifyCompletion "helm plugin uninstall pu" "push-artifactory push-plugin"
-_completionTests_verifyCompletion "helm plugin update " "2to3 push-artifactory push-plugin"
 _completionTests_verifyCompletion "helm plugin update pus" "push-artifactory push-plugin"
 if [ ! -z ${ROBOT_HELM_V3} ]; then
     # Make sure completion works as expected when there are no plugins
@@ -487,10 +476,6 @@ _completionTests_verifyCompletion "helm show values nginx/nginx --version 0.11" 
 
 # Dynamic completion for plugins
 _completionTests_verifyCompletion "helm push-plugin " ""
-_completionTests_verifyCompletion "helm 2to3 move config g" "gryffindor"
-_completionTests_verifyCompletion "helm 2to3 -n dumbledore convert " "case-ns convert dumbledore"
-_completionTests_verifyCompletion "helm 2to3 convert -s flag d" "dobby draco"
-_completionTests_verifyCompletion "helm 2to3 convert " "hermione harry ron"
 
 ##############################################################
 # Completion with helm called through an alias or using a path

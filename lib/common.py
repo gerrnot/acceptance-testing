@@ -29,10 +29,12 @@ class CommandRunner(object):
             raise AssertionError('Output contains "%s".' % s)
 
     def run_command(self, command, detach=False):
-        process = subprocess.Popen(['/bin/bash', '-xc', command],
-                                   stdout=subprocess.PIPE,
-                                   stderr=subprocess.STDOUT)
-        if not detach:
+        if detach:
+            subprocess.Popen(['/bin/bash', '-xc',  command])
+        else:
+            process = subprocess.Popen(['/bin/bash', '-xc', command],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT)
             stdout = process.communicate()[0].strip().decode()
             self.rc = process.returncode
             tmp = []
